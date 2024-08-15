@@ -61,6 +61,13 @@ function Recipe(props) {
                         </span>
                     )}
                 </Card.Text>
+                {props.smallCard && (
+                    <ul>
+                        {props.filteredIngredients.map((ingredient) => (
+                            <li key={ingredient.id} style={{textAlign:"left"}}>{ingredient.name}</li>
+                        ))}
+                    </ul>
+                )}
             </Card.Body>
         </Card>
     )

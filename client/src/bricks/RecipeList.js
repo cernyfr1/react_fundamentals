@@ -8,8 +8,8 @@ import RecipeGridList from "./RecipeGridList";
 function RecipeList(props) {
 
     const [viewType, setViewType] = useState("Velká karta");
-    const isGrid = viewType.includes("karta");
-    const viewTypes = ["Velká karta", "Malá karta", "Tabulka"]
+    const isGrid = viewType === "Velká karta" || viewType === "Ingredience";
+    const viewTypes = ["Velká karta", "Ingredience", "Tabulka"]
 
     function nextViewType() {
         const currentIndex = viewTypes.indexOf(viewType);
@@ -75,7 +75,7 @@ function RecipeList(props) {
                 </div>
             </Navbar>
             {isGrid ? (
-                <RecipeGridList recipeList={filteredRecipeList} smallCards={viewType === "Malá karta"} />
+                <RecipeGridList recipeList={filteredRecipeList} smallCards={viewType === "Ingredience"} />
             ) : (
                 <RecipeTableList recipeList={filteredRecipeList} />
             )}

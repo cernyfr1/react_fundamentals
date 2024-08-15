@@ -37,7 +37,6 @@ function App() {
                 return (
                     <div className="App">
                         <h1>Kuchařka</h1>
-                        <h3>Recepty:</h3>
                         <RecipeList recipeList={cookbookLoadCall.data}/>
                     </div>
                 );
