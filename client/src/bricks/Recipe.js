@@ -32,8 +32,6 @@ function Recipe(props) {
         return <span>{text}</span>;
     };
 
-    console.log(props.smallCard)
-
 
     return (
         <Card style={{ width: '26rem', margin: '16px' }}>

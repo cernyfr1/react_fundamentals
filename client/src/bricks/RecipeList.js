@@ -33,7 +33,6 @@ function RecipeList(props) {
 
     const filteredRecipeList = useMemo(() => {
         return props.recipeList.filter((recipe) => {
-            console.log("filtr")
             return (
                 recipe.name.toLocaleLowerCase().includes(searchBy.toLocaleLowerCase())
                 ||
