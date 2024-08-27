@@ -43,44 +43,63 @@ function RecipeList(props) {
 
     return (
         <div>
-            <Navbar bg="light">
+            <Navbar collapseOnSelect expand="sm" bg="light">
                 <div className="container-fluid">
                     <Navbar.Brand>Seznam receptů</Navbar.Brand>
-                    <div>
-                        <Form className="d-flex" onSubmit={handleSearch}>
-                            <Form.Control
-                                id={"searchInput"}
-                                style={{ maxWidth: "150px" }}
-                                type="search"
-                                placeholder="Search"
-                                aria-label="Search"
-                                onChange={handleSearchDelete}
-                            />
-                            <Button
-                                style={{ marginRight: "8px" }}
-                                variant="outline-success"
-                                type="submit"
-                            >
-                                <Icon size={1} path={mdiMagnify} />
-                            </Button>
-                            <Button
-                                variant="outline-primary"
-                                onClick={nextViewType}
-                            >
-                                <Icon size={1} path={isGrid ? mdiTable : mdiViewGridOutline} />{" "}
-                                {viewType}
-                            </Button>
-                        </Form>
-                    </div>
+                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                    <Navbar.Collapse style={{ justifyContent: "right" }}>
+                        <div>
+                            <Form className="d-flex" onSubmit={handleSearch}>
+                                <Form.Control
+                                    id={"searchInput"}
+                                    style={{ maxWidth: "150px" }}
+                                    type="search"
+                                    placeholder="Search"
+                                    aria-label="Search"
+                                    onChange={handleSearchDelete}
+                                />
+                                <Button
+                                    style={{ marginRight: "8px" }}
+                                    variant="outline-success"
+                                    type="submit"
+                                >
+                                    <Icon size={1} path={mdiMagnify} />
+                                </Button>
+                                <Button
+                                    className={"d-none d-md-block"}
+                                    variant="outline-primary"
+                                    onClick={nextViewType}
+                                >
+                                    <Icon size={1} path={isGrid ? mdiTable : mdiViewGridOutline} />{" "}
+                                    {viewType}
+                                </Button>
+                            </Form>
+                        </div>
+                    </Navbar.Collapse>
                 </div>
             </Navbar>
-            {isGrid ? (
-                <RecipeGridList recipeList={filteredRecipeList} smallCards={viewType === "Ingredience"} />
-            ) : (
-                <RecipeTableList recipeList={filteredRecipeList} />
-            )}
+            <div>
+                {filteredRecipeList.length ? (
+                        <div className="container">
+                            <div className={"d-block d-md-none"}>
+                                <RecipeGridList recipeList={filteredRecipeList} />
+                            </div>
+                            <div className={"d-none d-md-block"}>
+                                {isGrid ? (
+                                    <RecipeGridList recipeList={filteredRecipeList} smallCards={viewType === "Ingredience"} />
+                                ) : (
+                                    <RecipeTableList recipeList={filteredRecipeList} />
+                                )}
+                            </div>
+                        </div>
+                    ) : (
+                        <div style={{margin: "16px auto", textAlign: "center"}}>
+                            Nejsou žádné recepty ke zobrazení
+                        </div>
+                    )}
+            </div>
         </div>
-    )
+    );
 }
 
-export default RecipeList;
+                export default RecipeList;

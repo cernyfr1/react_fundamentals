@@ -34,7 +34,7 @@ function Recipe(props) {
 
 
     return (
-        <Card style={{ width: '26rem', margin: '16px' }}>
+        <Card style={{ margin: '16px' }}>
             <Card.Img
                 variant="top"
                 //src={props.recipe.imgUri}
