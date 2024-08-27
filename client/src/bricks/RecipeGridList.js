@@ -66,7 +66,7 @@ function RecipeGridList(props) {
         }
     }
 
-    return <div className="App">{getChild()}</div>;
+    return <div>{getChild()}</div>;
 }
 
 export default RecipeGridList;
