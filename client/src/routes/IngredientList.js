@@ -1,5 +1,7 @@
+import IngredientListBrick from "../bricks/IngredientList";
+
 function IngredientList() {
-    return <div>TODO IngredientList</div>;
+    return <IngredientListBrick />;
 
 }
 
