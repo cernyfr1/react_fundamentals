@@ -17,7 +17,7 @@ function App() {
                 variant="dark"
             >
                 <Container fluid>
-                    <Navbar.Brand onClick={() => navigate("/")}>
+                    <Navbar.Brand onClick={() => navigate("/home")}>
                         Kuchařka
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} />

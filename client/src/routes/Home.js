@@ -1,6 +1,7 @@
-function Home() {
-    return <div>TODO Home</div>;
+import RecipeListBrick from "../bricks/RecipeList";
 
+function Home() {
+    return <RecipeListBrick />;
 }
 
 export default Home;
