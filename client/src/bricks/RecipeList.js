@@ -1,18 +1,19 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {Button, Form, Navbar} from "react-bootstrap";
 import Icon from "@mdi/react";
-import {mdiLoading, mdiMagnify, mdiTable, mdiViewGridOutline} from "@mdi/js";
+import {mdiLoading, mdiMagnify, mdiPlus, mdiTable, mdiViewGridOutline} from "@mdi/js";
 import RecipeTableList from "./RecipeTableList";
 import RecipeGridList from "./RecipeGridList";
+import AddRecipeModal from "./AddRecipeModal";
 
 function RecipeList() {
 
     const [viewType, setViewType] = useState("Velká karta");
     const isGrid = viewType === "Velká karta" || viewType === "Ingredience";
     const viewTypes = ["Velká karta", "Ingredience", "Tabulka"]
-    const [cookbookLoadCall, setCookbookLoadCall] = useState({
-        state: "pending",
-    });
+    const [cookbookLoadCall, setCookbookLoadCall] = useState({ state: "pending" });
+    const [addGradeShow, setAddGradeShow] = useState(false);
+    const handleAddGradeShow = () => setAddGradeShow(true);
 
     useEffect(() => {
         fetch(`http://localhost:8000/recipe/list`, {
@@ -91,6 +92,7 @@ function RecipeList() {
                                                 <Icon size={1} path={mdiMagnify}/>
                                             </Button>
                                             <Button
+                                                style={{marginRight: "8px"}}
                                                 className={"d-none d-md-block"}
                                                 variant="outline-primary"
                                                 onClick={nextViewType}
@@ -98,6 +100,10 @@ function RecipeList() {
                                                 <Icon size={1} path={isGrid ? mdiTable : mdiViewGridOutline}/>{" "}
                                                 {viewType}
                                             </Button>
+                                            <AddRecipeModal
+                                                show={addGradeShow}
+                                                setAddGradeShow={setAddGradeShow}
+                                            />
                                         </Form>
                                     </div>
                                 </Navbar.Collapse>
