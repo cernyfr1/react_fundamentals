@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {Button, Form, Navbar} from "react-bootstrap";
 import Icon from "@mdi/react";
-import {mdiLoading, mdiMagnify, mdiPlus, mdiTable, mdiViewGridOutline} from "@mdi/js";
+import {mdiLoading, mdiMagnify, mdiTable, mdiViewGridOutline} from "@mdi/js";
 import RecipeTableList from "./RecipeTableList";
 import RecipeGridList from "./RecipeGridList";
 import AddRecipeModal from "./AddRecipeModal";
@@ -13,7 +13,6 @@ function RecipeList() {
     const viewTypes = ["Velká karta", "Ingredience", "Tabulka"]
     const [cookbookLoadCall, setCookbookLoadCall] = useState({ state: "pending" });
     const [addGradeShow, setAddGradeShow] = useState(false);
-    const handleAddGradeShow = () => setAddGradeShow(true);
 
     useEffect(() => {
         fetch(`http://localhost:8000/recipe/list`, {

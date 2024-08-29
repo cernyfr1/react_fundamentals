@@ -1,10 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Table from "react-bootstrap/Table";
 import Icon from "@mdi/react";
-import {mdiLoading, mdiMagnify, mdiTable, mdiViewGridOutline} from "@mdi/js";
-import {Button, Form, Navbar} from "react-bootstrap";
-import RecipeGridList from "./RecipeGridList";
-import RecipeTableList from "./RecipeTableList";
+import {mdiLoading} from "@mdi/js";
 
 function IngredientList() {
 
