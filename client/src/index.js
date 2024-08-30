@@ -6,7 +6,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Home from "./routes/Home";
 import IngredientList from "./routes/IngredientList";
-import RecipeDetail from "./routes/RecipeDetail";
 import RecipeList from "./routes/RecipeList";
 import {UserProvider} from "./UserProvider";
 import Authenticate from "./bricks/Authenticate";
@@ -20,7 +19,6 @@ root.render(
                   <Route path="/auth" element={<Authenticate />} />
                   <Route path="/" element={<App />}>
                       <Route path="home" element={<Home />} />
-                      <Route path="recipeDetail" element={<RecipeDetail />} />
                       <Route path="recipeList" element={<RecipeList />} />
                       <Route path="IngredientList" element={<IngredientList />} />
                   </Route>

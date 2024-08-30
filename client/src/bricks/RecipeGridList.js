@@ -27,7 +27,7 @@ function RecipeGridList(props) {
 
         return ingredientsLoadCall.data.filter(ingredient =>
             recipeIngredientIds.includes(ingredient.id)
-        );
+        ).sort((a, b) => recipeIngredientIds.indexOf(a.id) - recipeIngredientIds.indexOf(b.id));
     }
 
     function getChild() {

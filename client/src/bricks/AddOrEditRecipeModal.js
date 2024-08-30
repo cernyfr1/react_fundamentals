@@ -1,27 +1,23 @@
 import Icon from "@mdi/react";
-import {Button, Col, Form, Modal, Row} from 'react-bootstrap';
-import {mdiLoading, mdiPlus} from "@mdi/js";
+import {Button, Col, Form, FormGroup, Modal, Row} from 'react-bootstrap';
+import {mdiLoading, mdiPlus, mdiTrashCan} from "@mdi/js";
 import React, {useEffect, useState} from 'react'
 
-function AddRecipeModal({name, imgUri, description, ingredientId, ingredientQuantity, quantityMeasure }) {
+function AddOrEditRecipeModal({recipeId, name, imgUri, description, ingredientsList }) {
     const [isModalShown, setShow] = useState(false);
 
     const handleShowModal = () => setShow(true);
     const handleCloseModal = () => setShow(false);
     const [validated, setValidated] = useState(false);
     const [addRecipeCall, setAddRecipeCall] = useState({state: 'inactive'});
+    const [ingredients, setIngredients] = useState(ingredientsList ? ingredientsList : []);
 
     const [formData, setFormData] = useState({
         name: name,
         imgUri: imgUri,
         description: description,
-        ingredientId: ingredientId,
-        ingredientQuanity: ingredientQuantity,
-        quantityMeasure: quantityMeasure,
+        ingredients: ingredients
     });
-
-    console.log(formData)
-    console.log(name);
 
     const setField = (name, val) => {
         return setFormData((formData) => {
@@ -46,20 +42,15 @@ function AddRecipeModal({name, imgUri, description, ingredientId, ingredientQuan
         }
 
         setAddRecipeCall({state: 'pending'});
-        console.log(JSON.stringify(payload));
         const body = {
             name: payload.name,
             description: payload.description,
             imgUri: payload.imgUri,
-            ingredients: [
-                {
-                    id: payload.ingredientId,
-                    amount: payload.ingredientQuanity,
-                    unit: payload.quantityMeasure
-                }
-            ]
-    }
-        const res = await fetch(`http://localhost:8000/recipe/create`, {
+            ingredients: ingredients
+        }
+        if (recipeId) {body.id = recipeId;}
+
+        const res = await fetch(`http://localhost:8000/recipe/${recipeId ? "update" : "create"}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -76,7 +67,6 @@ function AddRecipeModal({name, imgUri, description, ingredientId, ingredientQuan
             handleCloseModal();
         }
 
-        console.log(payload);
     };
 
     const [cookbookLoadCall, setCookbookLoadCall] = useState({
@@ -85,7 +75,7 @@ function AddRecipeModal({name, imgUri, description, ingredientId, ingredientQuan
 
     useEffect(() => {
         if (isModalShown) fetchData();
-    }, [isModalShown]);
+    }, [isModalShown, ingredients]);
 
     const fetchData = async () => {
         setCookbookLoadCall({ state: "pending" });
@@ -97,9 +87,98 @@ function AddRecipeModal({name, imgUri, description, ingredientId, ingredientQuan
             setCookbookLoadCall({ state: "error", error: data });
         } else {
             setCookbookLoadCall({ state: "success", data });
-            //setField("ingredientId", data[0].id);
         }
     };
+
+    const handleIngredientChange = (index, field, value) => {
+        const updatedIngredients = ingredients.map((ingredient, i) =>
+            i === index ? { ...ingredient, [field]: value } : ingredient
+        );
+        setIngredients(updatedIngredients);
+        setField("ingredients", ingredients);
+    };
+
+    const handleAddIngredient = () => {
+        let updatedIngredients = ingredients;
+        updatedIngredients.push({id: cookbookLoadCall.data[0].id, amount: null, unit: ""})
+        setIngredients(updatedIngredients);
+        setField("ingredients", ingredients);
+    }
+
+    const handleIngredientDelete = (idToRemove) => {
+        const updatedIngredients = ingredients.filter(ingredient => ingredient.id !== idToRemove);
+        setIngredients(updatedIngredients);
+        setField("ingredients", ingredients);
+    }
+
+    function ingredientSelector() {
+        return (
+            <>
+                {ingredients.map((ingredient, index) => (
+                    <Row key={ingredient.id}>
+                        <Form.Group as={Col} xs="auto" className="mb-3" style={{paddingRight: "0"}}>
+                            {index === 0 && (<Form.Label>Ingredience</Form.Label>)}
+                            <Form.Select
+                                value={ingredient.id}
+                                required={true}
+                                onChange={(e) => handleIngredientChange(index, 'id', e.target.value)}
+                            >
+                                {cookbookLoadCall.data.map((ingredientOption) => (
+                                    <option value={ingredientOption.id} key={ingredientOption.id}>
+                                        {ingredientOption.name}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                                Toto pole nesmí být prázdné.
+                            </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Form.Group as={Col} className="mb-3" style={{padding: "0"}}>
+                            {index === 0 && (<Form.Label>Množství</Form.Label>)}
+                            <Form.Control
+                                type="number"
+                                value={ingredient.amount}
+                                required={true}
+                                onChange={(e) => handleIngredientChange(index, 'amount', parseInt(e.target.value))}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Toto pole nesmí být prázdné.
+                            </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Form.Group as={Col} className="mb-3" style={{padding: "0"}}>
+                            {index === 0 && (<Form.Label>Jednotka</Form.Label>)}
+                            <Form.Control
+                                type="text"
+                                value={ingredient.unit}
+                                required={true}
+                                onChange={(e) => handleIngredientChange(index, 'unit', e.target.value)}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Toto pole nesmí být prázdné.
+                            </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Form.Group as={Col} xs="auto" className="mb-3" style={{paddingLeft: "0"}}>
+                            {index === 0 && (<Form.Label>
+                                <span style={{display: "inline-block", height: "100%", visibility: "hidden"}}>X</span>
+                            </Form.Label>)}
+                            <div>
+                                <Button variant={"danger"} onClick={() => handleIngredientDelete(ingredient.id)}>
+                                    <Icon size={0.8} path={mdiTrashCan}></Icon>
+                                </Button>
+                            </div>
+
+                        </Form.Group>
+                    </Row>
+                ))}
+                <Button variant="secondary" onClick={handleAddIngredient} >
+                    Přidat ingredienci
+                </Button>
+            </>
+        )
+    }
 
     return (
         <>
@@ -157,52 +236,7 @@ function AddRecipeModal({name, imgUri, description, ingredientId, ingredientQuan
                                     </Form.Control.Feedback>
                                 </Form.Group>
 
-                                <Row>
-                                    <Form.Group as={Col} className="mb-3">
-                                        <Form.Label>Ingredience</Form.Label>
-                                        <Form.Select
-                                            value={formData.ingredientId}
-                                            required={true}
-                                            onChange={(e) => setField("ingredientId", e.target.value)}
-                                        >
-                                            {cookbookLoadCall.data.map((ingredientOption) => (
-                                                <option value={ingredientOption.id} key={ingredientOption.id}>
-                                                    {ingredientOption.name}
-                                                </option>
-                                            ))}
-                                        </Form.Select>
-                                        <Form.Control.Feedback type="invalid">
-                                            Toto pole nesmí být prázdné.
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} className="mb-3">
-                                        <Form.Label>Množství</Form.Label>
-                                        <Form.Control
-                                            type="number"
-                                            value={formData.ingredientQuanity}
-                                            required={true}
-                                            onChange={(e) => setField("ingredientQuanity", parseInt(e.target.value))}
-                                        />
-                                        <Form.Control.Feedback type="invalid">
-                                            Toto pole nesmí být prázdné.
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-
-                                    <Form.Group as={Col} className="mb-3">
-                                        <Form.Label>Jednotka</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            value={formData.quantityMeasure}
-                                            required={true}
-                                            onChange={(e) => setField("quantityMeasure", e.target.value)}
-                                        />
-                                        <Form.Control.Feedback type="invalid">
-                                            Toto pole nesmí být prázdné.
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-
-                                </Row>
+                                {ingredientSelector(ingredients)}
 
                             </Modal.Body>
                             <Modal.Footer>
@@ -213,6 +247,9 @@ function AddRecipeModal({name, imgUri, description, ingredientId, ingredientQuan
                                     }
                                 </div>
                                 <div className="d-flex flex-row gap-2">
+                                    <Button variant={"danger"}>
+                                        <Icon size={0.8} path={mdiTrashCan}></Icon>
+                                    </Button>
                                     <Button variant="secondary" onClick={handleCloseModal}>
                                         Zavřít
                                     </Button>
@@ -220,7 +257,7 @@ function AddRecipeModal({name, imgUri, description, ingredientId, ingredientQuan
                                         { addRecipeCall.state === 'pending' ? (
                                             <Icon size={0.8} path={mdiLoading} spin={true} />
                                         ) : (
-                                            "Přidat"
+                                            name ? "Upravit" : "Přidat recept"
                                         )}
                                     </Button>
                                 </div>
@@ -248,11 +285,11 @@ function AddRecipeModal({name, imgUri, description, ingredientId, ingredientQuan
                 class="btn btn-success btn-sm"
                 onClick={handleShowModal}
             >
-                <Icon path={mdiPlus} size={1} />
-                Přidat recept
+                {!name && <Icon path={mdiPlus} size={1} />}
+                {name ? "Upravit" : "Přidat recept"}
             </Button>
         </>
     )
 }
 
-export default AddRecipeModal;
+export default AddOrEditRecipeModal;

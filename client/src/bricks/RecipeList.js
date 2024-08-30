@@ -4,7 +4,7 @@ import Icon from "@mdi/react";
 import {mdiLoading, mdiMagnify, mdiTable, mdiViewGridOutline} from "@mdi/js";
 import RecipeTableList from "./RecipeTableList";
 import RecipeGridList from "./RecipeGridList";
-import AddRecipeModal from "./AddRecipeModal";
+import AddOrEditRecipeModal from "./AddOrEditRecipeModal";
 import UserContext from "../UserProvider";
 import {useNavigate} from "react-router-dom";
 
@@ -105,10 +105,12 @@ function RecipeList() {
                                                 <Icon size={1} path={isGrid ? mdiTable : mdiViewGridOutline}/>{" "}
                                                 {viewType}
                                             </Button>
-                                            <AddRecipeModal
-                                                show={addOrEditRecipeShow}
-                                                setAddGradeShow={setAddOrEditRecipeShow}
-                                            />
+                                            {isAuthenticated && (
+                                                <AddOrEditRecipeModal
+                                                    show={addOrEditRecipeShow}
+                                                    setAddGradeShow={setAddOrEditRecipeShow}
+                                                />
+                                            )}
                                         </Form>
                                     </div>
                                 </Navbar.Collapse>

@@ -1,8 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Card} from "react-bootstrap";
+import {Button, Card} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import UserContext from "../UserProvider";
-import AddRecipeModal from "./AddRecipeModal";
+import AddOrEditRecipeModal from "./AddOrEditRecipeModal";
+import Icon from "@mdi/react";
+import {mdiTrashCan, mdiTrashCanOutline} from "@mdi/js";
 
 function Recipe(props) {
 
@@ -67,21 +69,20 @@ function Recipe(props) {
                 </Card.Text>
                 {props.smallCard && (
                     <ul>
-                        {props.filteredIngredients.map((ingredient) => (
-                            <li key={ingredient.id} style={{textAlign:"left"}}>{ingredient.name}</li>
+                        {props.filteredIngredients.map((ingredient, index) => (
+                            <li key={ingredient.id} style={{textAlign:"left"}}>{ingredient.name + ` (${props.recipe.ingredients[index].amount} ${props.recipe.ingredients[index].unit})`}</li>
                         ))}
                     </ul>
                 )}
                 {isAuthenticated && (
-                    <AddRecipeModal
+                    <AddOrEditRecipeModal
                         show={addOrEditRecipeShow}
                         setAddGradeShow={setAddOrEditRecipeShow}
+                        recipeId={props.recipe.id}
                         name={props.recipe.name}
                         imgUri={props.recipe.imgUri}
                         description={props.recipe.description}
-                        ingredienId={props.filteredIngredients[0].ingredienId}
-                        ingredientQuantity={props.recipe.ingredients[0].amount}
-                        quantityMeasure={props.recipe.ingredients[0].unit}
+                        ingredientsList={props.recipe.ingredients}
                     />
                 )}
             </Card.Body>
