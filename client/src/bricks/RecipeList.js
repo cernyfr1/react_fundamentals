@@ -1,12 +1,18 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {Button, Form, Navbar} from "react-bootstrap";
 import Icon from "@mdi/react";
 import {mdiLoading, mdiMagnify, mdiTable, mdiViewGridOutline} from "@mdi/js";
 import RecipeTableList from "./RecipeTableList";
 import RecipeGridList from "./RecipeGridList";
 import AddRecipeModal from "./AddRecipeModal";
+import UserContext from "../UserProvider";
+import {useNavigate} from "react-router-dom";
 
 function RecipeList() {
+
+    let navigate = useNavigate();
+    const { isAuthenticated } = useContext(UserContext);
+    if (isAuthenticated === undefined) { navigate("/auth") }
 
     const [viewType, setViewType] = useState("Velká karta");
     const isGrid = viewType === "Velká karta" || viewType === "Ingredience";

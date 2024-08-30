@@ -2,10 +2,15 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Outlet, useNavigate} from "react-router-dom";
 import {Container, Nav, Navbar, Offcanvas} from "react-bootstrap";
+import {useContext} from "react";
+import UserContext from "./UserProvider";
 
 function App() {
 
     let navigate = useNavigate();
+    const { isAuthenticated } = useContext(UserContext);
+    if (isAuthenticated === undefined) { navigate("/auth") }
+
 
     return (
         <div className="App">

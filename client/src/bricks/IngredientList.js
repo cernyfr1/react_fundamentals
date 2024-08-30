@@ -1,9 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Table from "react-bootstrap/Table";
 import Icon from "@mdi/react";
 import {mdiLoading} from "@mdi/js";
+import {useNavigate} from "react-router-dom";
+import UserContext from "../UserProvider";
 
 function IngredientList() {
+
+    let navigate = useNavigate();
+    const { isAuthenticated } = useContext(UserContext);
+    if (isAuthenticated === undefined) { navigate("/auth") }
 
     const [cookbookLoadCall, setCookbookLoadCall] = useState({
         state: "pending",
