@@ -3,7 +3,7 @@ import {Button, Col, Form, Modal, Row} from 'react-bootstrap';
 import {mdiLoading, mdiPlus} from "@mdi/js";
 import React, {useEffect, useState} from 'react'
 
-function AddRecipeModal() {
+function AddRecipeModal({name, imgUri, description, ingredientId, ingredientQuantity, quantityMeasure }) {
     const [isModalShown, setShow] = useState(false);
 
     const handleShowModal = () => setShow(true);
@@ -12,13 +12,16 @@ function AddRecipeModal() {
     const [addRecipeCall, setAddRecipeCall] = useState({state: 'inactive'});
 
     const [formData, setFormData] = useState({
-        name: "",
-        imgUri: "",
-        description: "",
-        ingredientId: "",
-        ingredientQuanity: null,
-        quantityMeasure: ""
+        name: name,
+        imgUri: imgUri,
+        description: description,
+        ingredientId: ingredientId,
+        ingredientQuanity: ingredientQuantity,
+        quantityMeasure: quantityMeasure,
     });
+
+    console.log(formData)
+    console.log(name);
 
     const setField = (name, val) => {
         return setFormData((formData) => {
@@ -94,7 +97,7 @@ function AddRecipeModal() {
             setCookbookLoadCall({ state: "error", error: data });
         } else {
             setCookbookLoadCall({ state: "success", data });
-            setField("ingredientId", data[0].id);
+            //setField("ingredientId", data[0].id);
         }
     };
 

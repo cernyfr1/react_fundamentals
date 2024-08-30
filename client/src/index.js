@@ -8,20 +8,25 @@ import Home from "./routes/Home";
 import IngredientList from "./routes/IngredientList";
 import RecipeDetail from "./routes/RecipeDetail";
 import RecipeList from "./routes/RecipeList";
+import {UserProvider} from "./UserProvider";
+import Authenticate from "./bricks/Authenticate";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-      <BrowserRouter>
-          <Routes>
-              <Route path="/" element={<App />}>
-                  <Route path="home" element={<Home />} />
-                  <Route path="recipeDetail" element={<RecipeDetail />} />
-                  <Route path="recipeList" element={<RecipeList />} />
-                  <Route path="IngredientList" element={<IngredientList />} />
-              </Route>
-          </Routes>
-      </BrowserRouter>
+      <UserProvider>
+          <BrowserRouter>
+              <Routes>
+                  <Route path="/auth" element={<Authenticate />} />
+                  <Route path="/" element={<App />}>
+                      <Route path="home" element={<Home />} />
+                      <Route path="recipeDetail" element={<RecipeDetail />} />
+                      <Route path="recipeList" element={<RecipeList />} />
+                      <Route path="IngredientList" element={<IngredientList />} />
+                  </Route>
+              </Routes>
+          </BrowserRouter>
+      </UserProvider>
   </React.StrictMode>
 );
 

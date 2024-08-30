@@ -12,7 +12,7 @@ function RecipeList() {
     const isGrid = viewType === "Velká karta" || viewType === "Ingredience";
     const viewTypes = ["Velká karta", "Ingredience", "Tabulka"]
     const [cookbookLoadCall, setCookbookLoadCall] = useState({ state: "pending" });
-    const [addGradeShow, setAddGradeShow] = useState(false);
+    const [addOrEditRecipeShow, setAddOrEditRecipeShow] = useState(false);
 
     useEffect(() => {
         fetch(`http://localhost:8000/recipe/list`, {
@@ -100,8 +100,8 @@ function RecipeList() {
                                                 {viewType}
                                             </Button>
                                             <AddRecipeModal
-                                                show={addGradeShow}
-                                                setAddGradeShow={setAddGradeShow}
+                                                show={addOrEditRecipeShow}
+                                                setAddGradeShow={setAddOrEditRecipeShow}
                                             />
                                         </Form>
                                     </div>

@@ -1,11 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Card} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import UserContext from "../UserProvider";
+import AddRecipeModal from "./AddRecipeModal";
 
 function Recipe(props) {
 
     const [isExpanded, setIsExpanded] = useState(!props.smallCard);
     const maxLines = 3;
+    const {isAuthenticated} = useContext(UserContext);
+    const [addOrEditRecipeShow, setAddOrEditRecipeShow] = useState(false);
 
     useEffect(() => {
         setIsExpanded(!props.smallCard)
@@ -67,6 +71,18 @@ function Recipe(props) {
                             <li key={ingredient.id} style={{textAlign:"left"}}>{ingredient.name}</li>
                         ))}
                     </ul>
+                )}
+                {isAuthenticated && (
+                    <AddRecipeModal
+                        show={addOrEditRecipeShow}
+                        setAddGradeShow={setAddOrEditRecipeShow}
+                        name={props.recipe.name}
+                        imgUri={props.recipe.imgUri}
+                        description={props.recipe.description}
+                        ingredienId={props.filteredIngredients[0].ingredienId}
+                        ingredientQuantity={props.recipe.ingredients[0].amount}
+                        quantityMeasure={props.recipe.ingredients[0].unit}
+                    />
                 )}
             </Card.Body>
         </Card>
