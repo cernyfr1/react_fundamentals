@@ -1,10 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, Card} from "react-bootstrap";
+import {Card} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import UserContext from "../UserProvider";
 import AddOrEditRecipeModal from "./AddOrEditRecipeModal";
-import Icon from "@mdi/react";
-import {mdiTrashCan, mdiTrashCanOutline} from "@mdi/js";
 
 function Recipe(props) {
 
