@@ -75,7 +75,7 @@ function AddOrEditRecipeModal({recipeId, name, imgUri, description, ingredientsL
 
     useEffect(() => {
         if (isModalShown) fetchData();
-    }, [isModalShown, ingredients]);
+    }, [isModalShown]);
 
     const fetchData = async () => {
         setCookbookLoadCall({ state: "pending" });
@@ -105,10 +105,22 @@ function AddOrEditRecipeModal({recipeId, name, imgUri, description, ingredientsL
         setField("ingredients", ingredients);
     }
 
-    const handleIngredientDelete = (idToRemove) => {
-        const updatedIngredients = ingredients.filter(ingredient => ingredient.id !== idToRemove);
-        setIngredients(updatedIngredients);
+    const handleIngredientDelete = (indexToRemove) => {
+        let ingredientsCopy = ingredients;
+        ingredientsCopy.splice(indexToRemove, 1);
+        setIngredients(ingredientsCopy);
         setField("ingredients", ingredients);
+    }
+
+    const handleRecipeDelete = async () => {
+        await fetch(`http://localhost:8000/recipe/delete`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: recipeId })
+        });
+        handleCloseModal();
     }
 
     function ingredientSelector() {
@@ -165,7 +177,7 @@ function AddOrEditRecipeModal({recipeId, name, imgUri, description, ingredientsL
                                 <span style={{display: "inline-block", height: "100%", visibility: "hidden"}}>X</span>
                             </Form.Label>)}
                             <div>
-                                <Button variant={"danger"} onClick={() => handleIngredientDelete(ingredient.id)}>
+                                <Button variant={"danger"} onClick={() => handleIngredientDelete(index)}>
                                     <Icon size={0.8} path={mdiTrashCan}></Icon>
                                 </Button>
                             </div>
@@ -247,7 +259,7 @@ function AddOrEditRecipeModal({recipeId, name, imgUri, description, ingredientsL
                                     }
                                 </div>
                                 <div className="d-flex flex-row gap-2">
-                                    <Button variant={"danger"}>
+                                    <Button variant={"danger"} onClick={handleRecipeDelete}>
                                         <Icon size={0.8} path={mdiTrashCan}></Icon>
                                     </Button>
                                     <Button variant="secondary" onClick={handleCloseModal}>
