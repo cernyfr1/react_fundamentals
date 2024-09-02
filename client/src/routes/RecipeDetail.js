@@ -1,5 +1,14 @@
+import RecipeDetailBrick from "../bricks/RecipeDetail";
+import {useSearchParams} from "react-router-dom";
+
 function RecipeDetail() {
-    return <div>TODO RecipeDetail</div>;
+
+    let [searchParams] = useSearchParams();
+
+    const recipeId = searchParams.get("id");
+
+    if (!recipeId) return <></>;
+    return <RecipeDetailBrick id={recipeId} />;
 
 }
 

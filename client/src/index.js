@@ -9,6 +9,7 @@ import IngredientList from "./routes/IngredientList";
 import RecipeList from "./routes/RecipeList";
 import {UserProvider} from "./UserProvider";
 import Authenticate from "./bricks/Authenticate";
+import RecipeDetail from "./routes/RecipeDetail";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -20,7 +21,8 @@ root.render(
                   <Route path="/" element={<App />}>
                       <Route path="home" element={<Home />} />
                       <Route path="recipeList" element={<RecipeList />} />
-                      <Route path="IngredientList" element={<IngredientList />} />
+                      <Route path="ingredientList" element={<IngredientList />} />
+                      <Route path="recipeDetail" element={<RecipeDetail />} />
                   </Route>
               </Routes>
           </BrowserRouter>

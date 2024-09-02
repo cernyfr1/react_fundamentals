@@ -1,8 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Card} from "react-bootstrap";
+import {Button, Card} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import UserContext from "../UserProvider";
 import AddOrEditRecipeModal from "./AddOrEditRecipeModal";
+import {useNavigate} from "react-router-dom";
 
 function Recipe(props) {
 
@@ -10,6 +11,7 @@ function Recipe(props) {
     const maxLines = 3;
     const {isAuthenticated} = useContext(UserContext);
     const [addOrEditRecipeShow, setAddOrEditRecipeShow] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setIsExpanded(!props.smallCard)
@@ -35,6 +37,10 @@ function Recipe(props) {
         }
         return <span>{text}</span>;
     };
+
+    function handleRedirect() {
+        navigate(`/recipeDetail?id=${props.recipe.id}`);
+    }
 
 
     return (
@@ -72,6 +78,7 @@ function Recipe(props) {
                         ))}
                     </ul>
                 )}
+                <Button style={{ float: "right" }} onClick={handleRedirect}>Detail</Button>
                 {isAuthenticated && (
                     <AddOrEditRecipeModal
                         show={addOrEditRecipeShow}

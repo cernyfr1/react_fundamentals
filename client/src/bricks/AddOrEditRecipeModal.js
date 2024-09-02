@@ -297,7 +297,7 @@ function AddOrEditRecipeModal({recipeId, name, imgUri, description, ingredientsL
             )}
 
             <Button
-                style={{ float: "right" }}
+                style={{ float: "left" }}
                 variant="outline-primary"
                 class="btn btn-success btn-sm"
                 onClick={handleShowModal}
