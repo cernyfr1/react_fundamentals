@@ -3,6 +3,7 @@ import {Button, Col, Form, Modal, Row} from 'react-bootstrap';
 import {mdiLoading, mdiPlus, mdiTrashCan} from "@mdi/js";
 import React, {useContext, useEffect, useState} from 'react'
 import UserContext from "../UserProvider";
+import Confirmation from "./Confirmation";
 
 function AddOrEditRecipeModal({recipeId, name, imgUri, description, ingredientsList}) {
     const [isModalShown, setShow] = useState(false);
@@ -182,9 +183,18 @@ function AddOrEditRecipeModal({recipeId, name, imgUri, description, ingredientsL
                                 <span style={{display: "inline-block", height: "100%", visibility: "hidden"}}>X</span>
                             </Form.Label>)}
                             <div>
-                                <Button variant={"danger"} onClick={() => handleIngredientDelete(index)}>
-                                    <Icon size={0.8} path={mdiTrashCan}></Icon>
-                                </Button>
+                                <Confirmation
+                                    title="Smazat ingredienci"
+                                    message="Opravdu chcete ingredienci smazat?"
+                                    confirmText="Smazat"
+                                    onConfirm={() => handleIngredientDelete(index)}
+                                >
+                                    <div>
+                                        <Button variant={"danger"}>
+                                            <Icon size={0.8} path={mdiTrashCan}></Icon>
+                                        </Button>
+                                    </div>
+                                </Confirmation>
                             </div>
 
                         </Form.Group>
@@ -264,9 +274,18 @@ function AddOrEditRecipeModal({recipeId, name, imgUri, description, ingredientsL
                                     }
                                 </div>
                                 <div className="d-flex flex-row gap-2">
-                                    <Button variant={"danger"} onClick={handleRecipeDelete}>
-                                        <Icon size={0.8} path={mdiTrashCan}></Icon>
-                                    </Button>
+                                    <Confirmation
+                                        title="Smazat recept"
+                                        message="Opravdu chcete recept smazat?"
+                                        confirmText="Smazat"
+                                        onConfirm={handleRecipeDelete}
+                                    >
+                                        <div>
+                                            <Button variant={"danger"}>
+                                                <Icon size={0.8} path={mdiTrashCan}></Icon>
+                                            </Button>
+                                        </div>
+                                    </Confirmation>
                                     <Button variant="secondary" onClick={handleCloseModal}>
                                         Zavřít
                                     </Button>
