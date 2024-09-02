@@ -1,9 +1,10 @@
 import Icon from "@mdi/react";
 import {Button, Col, Form, Modal, Row} from 'react-bootstrap';
 import {mdiLoading, mdiPlus, mdiTrashCan} from "@mdi/js";
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
+import UserContext from "../UserProvider";
 
-function AddOrEditRecipeModal({recipeId, name, imgUri, description, ingredientsList }) {
+function AddOrEditRecipeModal({recipeId, name, imgUri, description, ingredientsList}) {
     const [isModalShown, setShow] = useState(false);
 
     const handleShowModal = () => setShow(true);
@@ -11,6 +12,8 @@ function AddOrEditRecipeModal({recipeId, name, imgUri, description, ingredientsL
     const [validated, setValidated] = useState(false);
     const [addRecipeCall, setAddRecipeCall] = useState({state: 'inactive'});
     const [ingredients, setIngredients] = useState(ingredientsList ? ingredientsList : []);
+    const { recipesRefreshIndex, setRecipesRefreshIndex } = useContext(UserContext);
+
 
     const [formData, setFormData] = useState({
         name: name,
@@ -64,6 +67,7 @@ function AddOrEditRecipeModal({recipeId, name, imgUri, description, ingredientsL
             setAddRecipeCall({ state: "error", error: data });
         } else {
             setAddRecipeCall({ state: "success", data });
+            setRecipesRefreshIndex(recipesRefreshIndex + 1);
             handleCloseModal();
         }
 
@@ -120,6 +124,7 @@ function AddOrEditRecipeModal({recipeId, name, imgUri, description, ingredientsL
             },
             body: JSON.stringify({ id: recipeId })
         });
+        setRecipesRefreshIndex(recipesRefreshIndex + 1);
         handleCloseModal();
     }
 

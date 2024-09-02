@@ -19,6 +19,8 @@ function RecipeList() {
     const viewTypes = ["Velká karta", "Ingredience", "Tabulka"]
     const [cookbookLoadCall, setCookbookLoadCall] = useState({ state: "pending" });
     const [addOrEditRecipeShow, setAddOrEditRecipeShow] = useState(false);
+    const { recipesRefreshIndex } = useContext(UserContext);
+
 
     useEffect(() => {
         fetch(`http://localhost:8000/recipe/list`, {
@@ -31,7 +33,7 @@ function RecipeList() {
                 setCookbookLoadCall({ state: "success", data: responseJson });
             }
         });
-    }, []);
+    }, [recipesRefreshIndex]);
 
     const [searchBy, setSearchBy] = useState("");
 
@@ -125,7 +127,8 @@ function RecipeList() {
                                     <div className={"d-none d-md-block"}>
                                         {isGrid ? (
                                             <RecipeGridList recipeList={filteredRecipeList}
-                                                            smallCards={viewType === "Ingredience"}/>
+                                                            smallCards={viewType === "Ingredience"}
+                                                            />
                                         ) : (
                                             <RecipeTableList recipeList={filteredRecipeList}/>
                                         )}
